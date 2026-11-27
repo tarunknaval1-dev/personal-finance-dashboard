@@ -7,16 +7,16 @@
 </head>
 <body>
     <h1>Personal Finance Dashboard</h1>
-    <p>Add an income or expense below.</p>
 
+    <h2>Summary</h2>
+    <p>Total income: {{ "%.2f"|format(income) }}</p>
+    <p>Total expenses: {{ "%.2f"|format(expenses) }}</p>
+    <p>Balance: {{ "%.2f"|format(balance) }}</p>
+
+    <h2>Add a transaction</h2>
     <form method="POST">
         <label for="description">Description:</label>
-        <input
-            type="text"
-            id="description"
-            name="description"
-            required
-        >
+        <input type="text" id="description" name="description" required>
 
         <label for="amount">Amount:</label>
         <input
@@ -34,16 +34,23 @@
             <option value="expense">Expense</option>
         </select>
 
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+
         <button type="submit">Add transaction</button>
     </form>
 
     <h2>Transactions</h2>
-
     {% if transactions %}
         <ul>
             {% for transaction in transactions %}
                 <li>
                     {{ transaction.description }} —
+                    {{ transaction.category }} —
                     {{ transaction.type }} —
                     {{ "%.2f"|format(transaction.amount) }}
                 </li>
